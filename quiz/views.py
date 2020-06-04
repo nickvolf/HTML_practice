@@ -1,5 +1,7 @@
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, DetailView
+from django.shortcuts import render
 from django.urls import reverse_lazy
+
 from .models import Quiz, PosNegQuestion
 
 
@@ -10,6 +12,12 @@ class QuizListView(ListView):
 class QuizView(DetailView):
     model = Quiz
     template_name = "quiz/quiz_detail.html"
+
+def quiz_detail_view(request, pk):
+    quiz = Quiz.objects.get(pk=pk)
+    images = quiz.mcimage_set.all()
+
+    return render(request, 'quiz/quiz_detail.html', {"quiz":quiz, "images":images})
 
 class QuizCreateView(CreateView):
     model = Quiz

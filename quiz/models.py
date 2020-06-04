@@ -13,40 +13,47 @@ class Quiz(models.Model):
 
 
 class MCImage(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
+    description = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.description
 
 
 class ChooseWordQuestion(models.Model):
-    image = models.ForeignKey(MCImage, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    image = models.ForeignKey(MCImage, null=True, blank=True, on_delete=models.SET_NULL)
     sentence_text_pre = models.CharField(max_length=120)
     sentence_text_post = models.CharField(max_length=120)
     correct_answer = models.CharField(max_length=20)
-    wrong_asnwer1 = models.CharField(max_length=20)
-    wrong_asnwer2 = models.CharField(max_length=20)
-    wrong_asnwer3 = models.CharField(max_length=20)
+    wrong_answer1 = models.CharField(max_length=20)
+    wrong_answer2 = models.CharField(max_length=20)
+    wrong_answer3 = models.CharField(max_length=20)
     points = models.PositiveIntegerField()
 
 
 class ChooseSentenceQuestion(models.Model):
-    image = models.ForeignKey(MCImage, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    image = models.ForeignKey(MCImage, null=True, blank=True, on_delete=models.SET_NULL)
     correct_answer = models.CharField(max_length=120)
-    wrong_asnwer1 = models.CharField(max_length=120)
-    wrong_asnwer2 = models.CharField(max_length=120)
-    wrong_asnwer3 = models.CharField(max_length=120)
+    wrong_answer1 = models.CharField(max_length=120)
+    wrong_answer2 = models.CharField(max_length=120)
+    wrong_answer3 = models.CharField(max_length=120)
     points = models.PositiveIntegerField()
 
 
 class PosNegQuestion(models.Model):
-    image = models.ForeignKey(MCImage, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    image = models.ForeignKey(MCImage, null=True, blank=True, on_delete=models.SET_NULL)
     correct_answer = models.CharField(max_length=120)
-    wrong_asnwer1 = models.CharField(max_length=120)
+    wrong_answer1 = models.CharField(max_length=120)
     points = models.PositiveIntegerField()
 
 
 class ResponseQuestion(models.Model):
-    image = models.ForeignKey(MCImage, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    image = models.ForeignKey(MCImage, null=True, blank=True, on_delete=models.SET_NULL)
     question = models.CharField(max_length=120)
     correct_answer = models.CharField(max_length=120)
-    wrong_asnwer1 = models.CharField(max_length=120)
+    wrong_answer1 = models.CharField(max_length=120)
     points = models.PositiveIntegerField()

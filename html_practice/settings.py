@@ -130,7 +130,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = "/images/"
+STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_URL = 'login'
