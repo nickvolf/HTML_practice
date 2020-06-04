@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Quiz Detail{% endblock title %}
+{% block content %}
+    <div>
+      <h2> {{ object.quiz_display_name }} </a></h2>
+    </div>
+    <a href="{% url 'quiz-list' %}">View All</a><br>
+    <a href="{% url 'quiz-update' object.pk %}">Update Quiz</a><br>
+    <a href="{% url 'quiz-delete' object.pk %}">Delete Quiz</a>
+{% endblock content%}

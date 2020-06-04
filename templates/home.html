@@ -1,0 +1,83 @@
+{% extends 'base.html'%}
+
+{% block title %}Turbo - Home{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+  <div class="d-flex justify-content-between" id="main-container">
+    <div id="card-holder">
+      <!-- Profile Card -->
+      <div class="container pt-5">
+        <div class="card text-center" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{ user.full_name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Class Name</h6>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <div class="card-extra-boxes">
+              <div class="text-light bg-primary p-2 rounded-lg">
+                <h5 class="m-0 p-0">{{ user.words.count }} </h5>
+                <h6 class='text-body m-0 p-0'><small>words learned</small></h6>
+              </div>
+              <div class="text-light bg-primary p-2 rounded-lg">
+                <h5 class="m-0 p-0">531,000</h5>
+                <h6 class='text-body m-0 p-0'><small>points</small></h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Streak Card -->
+      <div>
+        <div class="container pt-5">
+          <div class="card text-center" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Streak Count</h5>
+              <h2 class="card-subtitle mb-2 text-muted">6 days</h2>
+              <p class="card-text">Time Remaining</p>
+              <div class="card-extra-boxes">
+                <div class="text-light bg-primary p-2 rounded-lg">
+                  <h5 class="m-0 p-0"> {{ user.words.count }} </h5>
+                  <h6 class='text-body m-0 p-0'><small>words learned</small></h6>
+                </div>
+                <div class="text-light bg-primary p-2 rounded-lg">
+                  <h5 class="m-0 p-0">531,000</h5>
+                  <h6 class='text-body m-0 p-0'><small>points</small></h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="todo-card-container" class="container pt-5 font-weight-bold">
+      {% for quiz in object_list %}
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <h2> {{ quiz.quiz_display_name }} </h2>
+              <!-- <button class="btn btn-success">Start 시작</button> -->
+              <input class="btn btn-success" type="button" onclick="location.href='{% url 'quiz-detail' quiz.pk %}';" value="Start 시작" />
+            </div>
+            <div class="progress mt-3">
+             <div class="progress-bar" style="width:70%"></div>
+           </div>
+          </div>
+        </div>
+      {% empty %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h2> You are done! No more homework!</h2>
+            <input class="btn btn-success" type="button" onclick="location.href='#';" value="Start 시작" />
+          </div>
+          <div class="progress mt-3">
+           <div class="progress-bar" style="width:70%"></div>
+         </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+{% endblock %}

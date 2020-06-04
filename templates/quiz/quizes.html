@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Quiz List{% endblock title %}
+{% block content %}
+  {% for quiz in object_list %}
+    <div>
+      <h2><a href="{% url 'quiz-detail' quiz.pk %}"> {{ quiz.quiz_display_name }} </a></h2>
+    </div>
+  {% endfor %}
+  <a href="{% url 'quiz-add' %}">Add a quiz</a>
+{% endblock content%}

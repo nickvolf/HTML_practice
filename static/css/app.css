@@ -1,0 +1,24 @@
+.card-extra-boxes{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#words-learned-box{
+  border-radius: 10px;
+  width: 100px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#points-box{
+  border-radius: 10px;
+  width: 100px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
