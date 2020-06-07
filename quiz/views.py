@@ -15,9 +15,8 @@ class QuizView(DetailView):
 
 def quiz_detail_view(request, pk):
     quiz = Quiz.objects.get(pk=pk)
-    images = quiz.mcimage_set.all()
 
-    return render(request, 'quiz/quiz_detail.html', {"quiz":quiz, "images":images})
+    return render(request, 'quiz/quiz_detail.html', {"quiz":quiz})
 
 class QuizCreateView(CreateView):
     model = Quiz

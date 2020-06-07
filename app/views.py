@@ -25,3 +25,6 @@ class SignUpView(CreateView):
 
 class JavaView(TemplateView):
     template_name = 'javascript.html'
+
+class AjaxView(TemplateView):
+    template_name = 'ajax1.html'
