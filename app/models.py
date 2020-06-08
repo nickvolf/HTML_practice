@@ -9,9 +9,4 @@ class Classroom(models.Model):
     def __str__(self):
         return self.classroom_name
 
-class Word(models.Model):
-    english = models.CharField(max_length = 20)
-    korean = models.CharField(max_length = 8)
 
-    def __str__(self):
-        return self.english

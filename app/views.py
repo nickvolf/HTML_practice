@@ -6,25 +6,30 @@ from quiz.models import Quiz
 
 class IndexView(ListView):
     model = Quiz
-    template_name='home.html'
+    template_name = 'home.html'
     paginate_by = 4
 
 
 class GradesView(TemplateView):
-    template_name='grades.html'
+    template_name = 'grades.html'
+
 
 class TodoView(TemplateView):
-    template_name='todo.html'
+    template_name = 'todo.html'
+
 
 class ClassroomView(TemplateView):
-    template_name='classroom.html'
+    template_name = 'classroom.html'
+
 
 class SignUpView(CreateView):
     template_name = 'base.html'
     form_class = UserCreationForm
 
+
 class JavaView(TemplateView):
     template_name = 'javascript.html'
+
 
 class AjaxView(TemplateView):
     template_name = 'ajax1.html'

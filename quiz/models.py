@@ -1,6 +1,7 @@
 from django.db import models
 from django.shortcuts import reverse
 
+
 class Quiz(models.Model):
     quiz_name = models.CharField(max_length=10)
     quiz_display_name = models.CharField(max_length=50)
@@ -57,3 +58,12 @@ class ResponseQuestion(models.Model):
     correct_answer = models.CharField(max_length=120)
     wrong_answer1 = models.CharField(max_length=120)
     points = models.PositiveIntegerField()
+
+
+class Word(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    english = models.CharField(max_length=20)
+    korean = models.CharField(max_length=8)
+
+    def __str__(self):
+        return self.english

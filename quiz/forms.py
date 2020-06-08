@@ -5,3 +5,7 @@ from .models import Quiz
 
 class QuizCreateForm(forms.Form):
     quiz_name = forms.CharField(label='Quiz Name', max_length=30)
+
+
+class SendQuizInfoForm(forms.Form):
+    points = forms.CharField()
