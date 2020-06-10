@@ -4,6 +4,11 @@
 {% block title %} {{book.title}} {% endblock title %}
 {% block content %}
 <div class="container mt-5">
+    <h2>{{ book.title }}</h2>
+    <a href="{% url 'unit-create' %}">Add a Unit</a> |
+    <a href="{% url 'book-update' pk=book.pk %}">Edit Title</a> |
+    <a href="{% url 'book-delete' pk=book.pk %}">Delete Book</a>
+
     <table class="table table-hover">
       <thead>
         <tr>
@@ -15,7 +20,7 @@
         {% for unit in book.unit_set.all %}
         <tr>
           <th scope="row">{{ unit.number }}</th>
-          <td>{{ unit.title }}</td>
+          <td><a href="{% url 'unit-detail' unit.pk%}">{{ unit.title }}</a></td>
         </tr>
         {% endfor %}
       </tbody>

@@ -3,9 +3,12 @@
 
 {% block title %}Quiz Create{% endblock title %}
 {% block content %}
-<form action="" method="post">
-  {% csrf_token %}
-  {{ form|crispy }}
-  <input class="btn btn-primary" type="submit" value="Save" />
-</form>
+<div class="container mt-5">
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-primary" type="submit" value="Save" />
+  </form>
+</div>
+
 {% endblock content%}

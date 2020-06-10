@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}Book Edit{% endblock title %}
+{% block title %}Unit Edit{% endblock title %}
 {% block content %}
 <div class="container mt-5">
-  <h3>Change title of {{book.title}}</h3>
+  <h3>Change title of "{{unit.title}}"</h3>
   <div class = "container">
 <form action="" method="post">
   {% csrf_token %}

@@ -3,8 +3,10 @@ from django import forms
 from .models import Quiz
 
 
-class QuizCreateForm(forms.Form):
-    quiz_name = forms.CharField(label='Quiz Name', max_length=30)
+class QuizCreateForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = "__all__"
 
 
 class SendQuizInfoForm(forms.Form):

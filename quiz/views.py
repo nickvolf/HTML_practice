@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, DetailView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from .forms import SendQuizInfoForm
+from .forms import SendQuizInfoForm, QuizCreateForm
 import datetime
 
 from .models import Quiz
@@ -35,10 +35,15 @@ def quiz_detail_view(request, pk):
         return render(request, 'quiz/quiz_detail.html', {"quiz": quiz, "return_form": return_form})
 
 
-class QuizCreateView(CreateView):
-    model = Quiz
-    template_name = 'quiz/quiz_create.html'
-    fields = ['quiz_name', 'quiz_display_name']
+def quiz_create_view(request):
+    if request.method == "POST":
+        form = QuizCreateForm(request.POST)
+        if form.is_valid():
+            quiz = form.save()
+            return redirect('unit-detail', pk=quiz.unit.pk)
+    else:
+        form = QuizCreateForm()
+        return render(request, 'quiz/quiz_create.html', {"form": form})
 
 
 class QuizUpdateView(UpdateView):
