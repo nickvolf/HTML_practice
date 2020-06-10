@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} {{book.title}} {% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for unit in book.unit_set.all %}
+        <tr>
+          <th scope="row">{{ unit.number }}</th>
+          <td>{{ unit.title }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+{% endblock content%}

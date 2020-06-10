@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'app.apps.AppConfig',
     'quiz.apps.QuizConfig',
+    'books.apps.BooksConfig',
 
     # 3rd Party Apps
     'crispy_forms',

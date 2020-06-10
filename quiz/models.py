@@ -1,8 +1,10 @@
 from django.db import models
 from django.shortcuts import reverse
+from books.models import Unit
 
 
 class Quiz(models.Model):
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
     quiz_name = models.CharField(max_length=10)
     quiz_display_name = models.CharField(max_length=50)
 
