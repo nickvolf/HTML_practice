@@ -19,7 +19,7 @@
         {% for quiz in unit.quiz_set.all %}
         <tr>
           <th scope="row">{{ forloop.counter }}</th>
-          <td>{{ quiz.quiz_display_name }}</td>
+          <td><a href="{% url 'quiz-detail' pk=quiz.pk %}">{{ quiz.quiz_display_name }}</a></td>
         </tr>
         {% endfor %}
       </tbody>

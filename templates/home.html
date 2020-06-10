@@ -57,7 +57,7 @@
             <div class="d-flex justify-content-between">
               <h2> {{ quiz.quiz_display_name }} </h2>
               <!-- <button class="btn btn-success">Start 시작</button> -->
-              <input class="btn btn-success" type="button" onclick="location.href='{% url 'quiz-detail' quiz.pk %}';" value="Start 시작" />
+              <input class="btn btn-success" type="button" onclick="location.href='{% url 'quiz-take' quiz.pk %}';" value="Start 시작" />
             </div>
             <div class="progress mt-3">
              <div class="progress-bar" style="width:70%"></div>

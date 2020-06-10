@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Quiz Detail{% endblock title %}
+{% block content %}
+<div class="container justify-content-center">
+
+    <div>
+    </div>
+    <h2 id="quiz-title">
+        </a></h2>
+    <div class="container pt-5 mb-5">
+        <div class="card text-center" style="width: 60rem;">
+            <div id="quiz-root" class="card-body bg-info">
+                <img class="card-img-top img-rounded img-responsive" id="cw-image-container" src="" alt="">
+                <div id="cw-sentence-container">
+                    <!-- In the JS code
+                    <h5>Pre Text - Goes Here
+                    <select name="" id="choices">
+                        <option id="cw-option-1"value="">1</option>
+                        <option id="cw-option-2"value="">4</option>
+                        <option id="cw-option-3"value="">2</option>
+                        <option id="cw-option-4"value="">Test</option>
+                      </select>Post Text - Goes Here
+                    </h5>
+                    -->
+                </div>
+                <input id="submit-button" type="submit" value="Test">
+            </div>
+        </div>
+
+
+        <a href="{% url 'quiz-list' %}">View All</a><br>
+        <a href="{% url 'quiz-update' quiz.pk %}">Update Quiz</a><br>
+        <a href="{% url 'quiz-delete' quiz.pk %}">Delete Quiz</a>
+    </div>
+
+    <form action="." id="return-form" name="return-form" method="post">
+        {% csrf_token %}
+        {% for field in return_form %}
+        {{ field.as_hidden }}
+        {% endfor %}
+    </form>
+    {% endblock content%}
+
+
+    {% block javascript %}
+    <
+    <script>
+  let quizScore = 0;
+  var quizName = "{{ quiz.quiz_display_name }}";
+  var cwquestions = [];
+  var csquestions = [];
+  var pnquestions = [];
+  var rpquestions = [];
+
+  {% for question in quiz.choosewordquestion_set.all %}
+        var thisQuestion = {
+          image:"{% static 'images/'%}{{ question.image.image }}",
+          sentenceTextPre:"{{question.sentence_text_pre}}",
+          sentenceTextPost:"{{question.sentence_text_post}}",
+          answers: ["{{question.correct_answer}}", "{{question.wrong_answer1}}", "{{question.wrong_answer2}}", "{{question.wrong_answer3}}"],
+          correctAnswer:"{{question.correct_answer|safe}}",
+          points: {{ question.points }},
+          numCorrect: 0
+          }
+        cwquestions.push(thisQuestion)
+  {% endfor %}
+
+  {% for question in quiz.choosesentencequestion_set.all %}
+        var thisQuestion = {
+          image:"{% static 'images/'%}{{ question.image.image }}",
+          answers: ["{{question.correct_answer}}", "{{question.wrong_answer1}}", "{{question.wrong_answer2}}", "{{question.wrong_answer3}}"],
+          correctAnswer:"{{question.correct_answer|safe}}",
+          points: {{ question.points }},
+          numCorrect: 0
+          }
+        csquestions.push(thisQuestion)
+  {% endfor %}
+
+  {% for question in quiz.posnegquestion_set.all %}
+        var thisQuestion = {
+          image:"{% static 'images/'%}{{ question.image.image }}",
+          answers: ["{{question.correct_answer}}", "{{question.wrong_answer1}}"],
+          correctAnswer:"{{question.correct_answer|safe}}",
+          points: {{ question.points }},
+          numCorrect: 0
+          }
+        pnquestions.push(thisQuestion)
+  {% endfor %}
+
+  {% for question1 in quiz.responsequestion_set.all %}
+        var thisQuestion = {
+          image:"{% static 'images/'%}{{ question1.image.image }}",
+          asked: "{{ question1.question }}",
+          answers: ["{{question1.correct_answer}}", "{{question1.wrong_answer1}}"],
+          correctAnswer:"{{question1.correct_answer|safe}}",
+          points: {{ question1.points }},
+          numCorrect: 0
+          }
+        rpquestions.push(thisQuestion)
+  {% endfor %}
+
+  function submitForm(points){
+    var form = document.getElementById('return-form');
+    var element1 = form.elements[1];
+    element1.value = points;
+    console.log('Points Sent:' + points);
+    form.submit();
+  }
+
+    </script>
+    <script src="{% static 'js/quiz.js' %}"></script>
+    {% endblock javascript%}
