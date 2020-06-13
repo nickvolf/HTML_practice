@@ -6,7 +6,7 @@ from .models import Book, Unit
 class BookCreateForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = '__all__'
+        fields = ['title',]
 
 class UnitCreateForm(forms.ModelForm):
     class Meta:

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} {{book.title}} {% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <h2>{{ classroom.name }}</h2>
+    <a href="{% url 'add-student' classroom.pk  %}">Add a Student</a> |
+    <a href="{% url 'remove-student' classroom.pk  %}">Remove a Student</a> |
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in classroom.customuser_set.all %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td><a href="{% url 'unit-detail' classroom.pk%}">{{ student.full_name }}</a></td>
+          <td>{{ student.last_test }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+        <a href="{% url 'add-book' classroom.pk  %}">Add a Book</a> |
+    <a href="{% url 'remove-book' classroom.pk  %}">Remove a Book</a> |
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in classroom.book_set.all %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td><a href="{% url 'book-detail' book.pk%}">{{ book.title }}</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+
+{% endblock content%}

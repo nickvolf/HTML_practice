@@ -2,11 +2,10 @@ from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 from django.urls import path, include
 from . import views
-from .views import (
-    QuizListView, )
+
 
 urlpatterns = [
-    path('', QuizListView.as_view(), name='quiz-list'),
+
     path('<int:pk>/', views.quiz_detail_view, name='quiz-detail'),
     path('take/<int:pk>/', views.quiz_take_view, name='quiz-take'),
     path('add/<int:pk>', views.quiz_create_view, name='quiz-create'),

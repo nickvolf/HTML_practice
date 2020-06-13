@@ -1,13 +1,13 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
+from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
-from quiz.models import Quiz
+from users.models import CustomUser
 
 
-class IndexView(ListView):
-    model = Quiz
-    template_name = 'home.html'
-    paginate_by = 4
+def home_view(request):
+    quiz_list = request.user.userquiz_set.filter(is_passed=False)
+    return render(request, 'home.html', {"quiz_list": quiz_list})
 
 
 class GradesView(TemplateView):
@@ -16,10 +16,6 @@ class GradesView(TemplateView):
 
 class TodoView(TemplateView):
     template_name = 'todo.html'
-
-
-class ClassroomView(TemplateView):
-    template_name = 'classroom.html'
 
 
 class SignUpView(CreateView):

@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import AbstractUser
-from quiz.models import Word
-from quiz.models import Quiz
+from quiz.models import Word, Quiz
+from classroom.models import Classroom
 
 
 class CustomUser(AbstractUser):
@@ -12,6 +12,11 @@ class CustomUser(AbstractUser):
     birth_date = models.DateField(null=True, blank=True)
     words = models.ManyToManyField(Word)
     last_test = models.DateTimeField(default=now, blank=True)
+    classroom = models.ManyToManyField(Classroom, blank=True)
+    has_class = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.full_name
 
 
 class UserQuiz(models.Model):

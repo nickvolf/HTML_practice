@@ -3,12 +3,9 @@
 
 {% block title %}Quiz Create{% endblock title %}
 {% block content %}
-<div class="container my-5">
-  <form action="" method="post">
+<form action="" method="post">
   {% csrf_token %}
   {{ form|crispy }}
   <input class="btn btn-primary" type="submit" value="Save" />
 </form>
-</div>
-
 {% endblock content%}

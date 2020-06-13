@@ -51,13 +51,13 @@
       </div>
     </div>
     <div id="todo-card-container" class="container pt-5 font-weight-bold">
-      {% for quiz in object_list %}
+      {% for quiz in quiz_list %}
         <div class="card mb-3">
           <div class="card-body">
             <div class="d-flex justify-content-between">
-              <h2> {{ quiz.quiz_display_name }} </h2>
+              <h2> {{ quiz.quiz.quiz_display_name }} </h2>
               <!-- <button class="btn btn-success">Start 시작</button> -->
-              <input class="btn btn-success" type="button" onclick="location.href='{% url 'quiz-take' quiz.pk %}';" value="Start 시작" />
+              <input class="btn btn-success" type="button" onclick="location.href='{% url 'quiz-take' quiz.quiz.pk %}';" value="Start 시작" />
             </div>
             <div class="progress mt-3">
              <div class="progress-bar" style="width:70%"></div>

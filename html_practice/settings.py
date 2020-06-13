@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'app.apps.AppConfig',
     'quiz.apps.QuizConfig',
     'books.apps.BooksConfig',
+    'classroom.apps.ClassroomConfig',
 
     # 3rd Party Apps
     'crispy_forms',
