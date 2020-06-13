@@ -1,6 +1,6 @@
 from django.forms import modelformset_factory
 from django import forms
-from .models import Quiz, ChooseWordQuestion, ChooseSentenceQuestion, PosNegQuestion, ResponseQuestion, MCImage
+from .models import Quiz, ChooseWordQuestion, ChooseSentenceQuestion, PosNegQuestion, ResponseQuestion, MCImage, Word
 
 
 class QuizCreateForm(forms.ModelForm):
@@ -36,4 +36,9 @@ class RPQuestionForm(forms.ModelForm):
 class MCImageForm(forms.ModelForm):
     class Meta:
         model = MCImage
+        fields = "__all__"
+
+class WordForm(forms.ModelForm):
+    class Meta:
+        model = Word
         fields = "__all__"

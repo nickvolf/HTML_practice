@@ -132,10 +132,10 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_URL = "/images/"
+MEDIA_URL = "/media/"
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'users.CustomUser'

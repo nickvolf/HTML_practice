@@ -4,21 +4,26 @@
 {% block title %} Quiz Creation {% endblock title %}
 {% block content %}
 <div class="container mt-5">
-  <h2>Quiz for {{ quiz.unit.book.title }} - {{ quiz.unit.title }}</h2>
-<!--    Table For Choose Words-->
+  <div class='d-flex'>
+    <h2>Quiz for {{ quiz.unit.book.title }} - {{ quiz.unit.title }}</h2>
+    <a href="{% url 'image-upload' %}">Upload Image</a>
+</div>
+  <!--    Table For Choose Words-->
   <a href="{% url 'cwq-create' pk=quiz.pk%}">Create Question</a>
     <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col">#</th>
           <th scope="col">Choose Word Questions</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         {% for question in quiz.choosewordquestion_set.all %}
         <tr>
           <th scope="row">{{ forloop.counter }}</th>
-          <td>{{ question }}</td>
+          <td><a href="{% url 'cwq-detail' pk=question.pk%}">{{ question }}</a></td>
+          <td><a class ="muted" href="{% url 'cwq-delete' pk=question.pk %}">Delete</a></td>
         </tr>
         {% endfor %}
       </tbody>
@@ -30,13 +35,15 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Choose Sentence Questions</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         {% for question in quiz.choosesentencequestion_set.all %}
         <tr>
           <th scope="row">{{ forloop.counter }}</th>
-          <td>{{ question }}</td>
+          <td><a href="{% url 'csq-detail' pk=question.pk%}">{{ question }}</a></td>
+          <td><a class ="muted" href="{% url 'csq-delete' pk=question.pk %}">Delete</a></td>
         </tr>
         {% endfor %}
       </tbody>
@@ -49,13 +56,15 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Pos Neg Questions</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         {% for question in quiz.posnegquestion_set.all %}
         <tr>
           <th scope="row">{{ forloop.counter }}</th>
-          <td>{{ question }}</td>
+          <td><a href="{% url 'pnq-detail' pk=question.pk%}">{{ question }}</a></td>
+          <td><a class ="muted" href="{% url 'pnq-delete' pk=question.pk %}">Delete</a></td>
         </tr>
         {% endfor %}
       </tbody>
@@ -68,17 +77,42 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Response Questions</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         {% for question in quiz.responsequestion_set.all %}
         <tr>
           <th scope="row">{{ forloop.counter }}</th>
-          <td>{{ question.question }}</td>
+          <td><a href="{% url 'rpq-detail' pk=question.pk%}">{{ question.question }}</a></td>
           <td>{{ question.correct_answer }}</td>
+           <td><a class ="muted" href="{% url 'rpq-delete' pk=question.pk %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+        </table>
+        <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">English</th>
+          <th scope="col">Korean</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <a href="{% url 'word-create' pk=quiz.pk %}">Add Word</a>
+      <tbody>
+        {% for word in quiz.word_set.all %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ word.english }}</td>
+          <td>{{ word.korean }}</td>
+          <td><a class ="muted" href="{% url 'word-delete' pk=word.pk %}">Delete</a></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
 </div>
+<a href="{% url 'quiz-delete' quiz.pk %}">Delete Quiz</a>
 {% endblock content%}

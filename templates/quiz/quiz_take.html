@@ -27,11 +27,6 @@
                 <input id="submit-button" type="submit" value="Test">
             </div>
         </div>
-
-
-        <a href="{% url 'quiz-list' %}">View All</a><br>
-        <a href="{% url 'quiz-update' quiz.pk %}">Update Quiz</a><br>
-        <a href="{% url 'quiz-delete' quiz.pk %}">Delete Quiz</a>
     </div>
 
     <form action="." id="return-form" name="return-form" method="post">
@@ -44,7 +39,6 @@
 
 
     {% block javascript %}
-    <
     <script>
   let quizScore = 0;
   var quizName = "{{ quiz.quiz_display_name }}";
@@ -55,7 +49,7 @@
 
   {% for question in quiz.choosewordquestion_set.all %}
         var thisQuestion = {
-          image:"{% static 'images/'%}{{ question.image.image }}",
+          image:"{{ question.image.image.url }}",
           sentenceTextPre:"{{question.sentence_text_pre}}",
           sentenceTextPost:"{{question.sentence_text_post}}",
           answers: ["{{question.correct_answer}}", "{{question.wrong_answer1}}", "{{question.wrong_answer2}}", "{{question.wrong_answer3}}"],
@@ -68,7 +62,7 @@
 
   {% for question in quiz.choosesentencequestion_set.all %}
         var thisQuestion = {
-          image:"{% static 'images/'%}{{ question.image.image }}",
+          image:"{{ question.image.image.url  }}",
           answers: ["{{question.correct_answer}}", "{{question.wrong_answer1}}", "{{question.wrong_answer2}}", "{{question.wrong_answer3}}"],
           correctAnswer:"{{question.correct_answer|safe}}",
           points: {{ question.points }},
@@ -79,7 +73,7 @@
 
   {% for question in quiz.posnegquestion_set.all %}
         var thisQuestion = {
-          image:"{% static 'images/'%}{{ question.image.image }}",
+          image:"{{ question.image.image.url  }}",
           answers: ["{{question.correct_answer}}", "{{question.wrong_answer1}}"],
           correctAnswer:"{{question.correct_answer|safe}}",
           points: {{ question.points }},
@@ -90,7 +84,7 @@
 
   {% for question1 in quiz.responsequestion_set.all %}
         var thisQuestion = {
-          image:"{% static 'images/'%}{{ question1.image.image }}",
+          image:"{{ question1.image.image.url }}",
           asked: "{{ question1.question }}",
           answers: ["{{question1.correct_answer}}", "{{question1.wrong_answer1}}"],
           correctAnswer:"{{question1.correct_answer|safe}}",

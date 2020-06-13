@@ -5,8 +5,8 @@
 <h1>Delete Post</h1>
 <form action="" method="post">
   {% csrf_token %}
-  <p>Are you sure you want to delete {{ object.quiz_name }}?</p>
-  <input type="submit" value="Confirm" />  
+  <p>Are you sure you want to delete {{ quiz.quiz_name }}?</p>
+  <input type="submit" value="Confirm" />
 </form>
 
 {% endblock content%}
