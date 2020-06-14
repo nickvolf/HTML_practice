@@ -56,6 +56,11 @@ def class_add_students(request, pk):
             student.classroom.add(classroom)
             student.has_class = True
             student.save()
+            for book in classroom.book_set.all():
+                for unit in book.unit_set.all():
+                    for quiz in unit.quiz_set.all():
+                        userquiz = UserQuiz(user=student, quiz=quiz)
+                        userquiz.save()
             return redirect('class-detail', pk=pk)
     else:
         form = AddStudent()
@@ -70,6 +75,11 @@ def class_remove_students(request, pk):
             classroom = get_object_or_404(Classroom, pk=pk)
             student.classroom.remove(classroom)
             student.has_class = False
+            for book in classroom.book_set.all():
+                for unit in book.unit_set.all():
+                    for quiz in unit.quiz_set.all():
+                        userquiz= UserQuiz.objects.get(user=student, quiz=quiz)
+                        userquiz.delete()
             student.save()
             return redirect('class-detail', pk=pk)
     else:
@@ -84,12 +94,13 @@ def class_add_books(request, pk):
             title = form.cleaned_data['book']
             classroom = get_object_or_404(Classroom, pk=pk)
             book = get_object_or_404(Book, title=title)
-            book.classroom.add(classroom)
-            for student in classroom.customuser_set.all():
-                for unit in book.unit_set.all():
-                    for quiz in unit.quiz_set.all():
-                        userquiz = UserQuiz(quiz=quiz, user=student)
-                        userquiz.save()
+            if book not in classroom.book_set.all():
+                book.classroom.add(classroom)
+                for student in classroom.customuser_set.all():
+                    for unit in book.unit_set.all():
+                        for quiz in unit.quiz_set.all():
+                            userquiz = UserQuiz(quiz=quiz, user=student)
+                            userquiz.save()
             return redirect('class-detail', pk=pk)
     else:
         form = AddBook()
@@ -102,13 +113,14 @@ def class_remove_books(request, pk):
         if form.is_valid():
             book = form.cleaned_data.get('book')
             classroom = get_object_or_404(Classroom, pk=pk)
-            book.classroom.remove(classroom)
-            book.save()
-            for student in classroom.customuser_set.all():
-                for unit in book.unit_set.all():
-                    for quiz in unit.quiz_set.all():
-                        userquiz = student.userquiz_set.get(quiz = quiz)
-                        userquiz.delete()
+            if book in classroom.book_set.all():
+                book.classroom.remove(classroom)
+                book.save()
+                for student in classroom.customuser_set.all():
+                    for unit in book.unit_set.all():
+                        for quiz in unit.quiz_set.all():
+                            userquiz = student.userquiz_set.get(quiz = quiz)
+                            userquiz.delete()
             return redirect('class-detail', pk=pk)
     else:
         form = RemoveBook()

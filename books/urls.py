@@ -13,7 +13,7 @@ urlpatterns = [
 
     # Unit Paths
     path('unit/<int:pk>/', views.unit_detail_view, name='unit-detail'),
-    path('unit/add/', views.unit_create_view, name='unit-create'),
+    path('unit/add/<int:pk>', views.unit_create_view, name='unit-create'),
     path('unit/<int:pk>/update', views.unit_update_view, name='unit-update'),
     path('unit/<int:pk>/delete', views.unit_delete_view, name='unit-delete'),
 

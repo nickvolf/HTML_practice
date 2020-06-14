@@ -24,6 +24,7 @@ def quiz_take_view(request, pk):
             word_set = quiz.word_set.all()
             userquiz = user.userquiz_set.get(quiz=quiz)
             userquiz.is_passed = True
+            userquiz.date_passed = datetime.datetime.now()
             userquiz.save()
             for word in word_set:
                 if word not in user.words.all():

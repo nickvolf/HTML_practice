@@ -14,6 +14,8 @@ class CustomUser(AbstractUser):
     last_test = models.DateTimeField(default=now, blank=True)
     classroom = models.ManyToManyField(Classroom, blank=True)
     has_class = models.BooleanField(default=False)
+    streak = models.PositiveIntegerField(default=0)
+
 
     def __str__(self):
         return self.full_name
@@ -24,6 +26,9 @@ class UserQuiz(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     is_passed = models.BooleanField(default=False)
     date_passed = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return self.quiz.quiz_name
 
 
 class UserTest(models.Model):

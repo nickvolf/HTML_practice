@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container mt-5">
     <h2>{{ book.title }}</h2>
-    <a href="{% url 'unit-create' %}">Add a Unit</a> |
+    <a href="{% url 'unit-create' pk=book.pk %}">Add a Unit</a> |
     <a href="{% url 'book-update' pk=book.pk %}">Edit Title</a> |
     <a href="{% url 'book-delete' pk=book.pk %}">Delete Book</a>
 

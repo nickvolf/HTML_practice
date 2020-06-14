@@ -50,7 +50,7 @@ def unit_detail_view(request, pk):
     return render(request, 'books/unit_detail.html', {"unit": unit})
 
 
-def unit_create_view(request):
+def unit_create_view(request, pk):
     if request.method == "POST":
         form = UnitCreateForm(request.POST)
         if form.is_valid():
@@ -58,6 +58,8 @@ def unit_create_view(request):
             return redirect('book-detail', pk=unit.book.pk)
     else:
         form = UnitCreateForm()
+        book = get_object_or_404(Book, pk=pk)
+        form.fields['book'].initial = book
         return render(request, 'books/unit_create.html', {"form": form})
 
 
