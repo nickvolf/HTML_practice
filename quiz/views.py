@@ -5,7 +5,7 @@ import datetime
 
 from .models import Quiz, ChooseWordQuestion, ChooseSentenceQuestion, PosNegQuestion, ResponseQuestion, Word
 from books.models import Unit
-from users.models import UserQuiz
+from users.models import UserQuiz, UserWord, WordList
 
 
 def quiz_detail_view(request, pk):
@@ -29,6 +29,14 @@ def quiz_take_view(request, pk):
             for word in word_set:
                 if word not in user.words.all():
                     user.words.add(word)
+                    if user.wordlist:
+                        userword = UserWord(word_list=user.worldlist, word=word)
+                        userword.save()
+                    else:
+                        wordlist = WordList(user=user)
+                        wordlist.save()
+                        userword = UserWord(word_list=user.worldlist, word=word)
+                        userword.save()
             user.last_test = datetime.datetime.now()
             user.save()
 
@@ -48,7 +56,7 @@ def quiz_create_view(request, pk):
             book = quiz.unit.book
             for classroom in book.classroom.all():
                 for student in classroom.customuser_set.all():
-                    userquiz = UserQuiz(quiz=quiz, user=student)
+                    userquiz = UserQuiz(quiz=quiz, user=student, todolist=user.todolist)
                     userquiz.save()
 
             return redirect('unit-detail', pk=quiz.unit.pk)

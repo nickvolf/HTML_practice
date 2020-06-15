@@ -3,12 +3,18 @@ from django.views.generic.edit import CreateView
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from datetime import datetime, timedelta
-from users.models import CustomUser
+from users.models import CustomUser, ToDoList
 
 
 def home_view(request):
     user = request.user
-    quiz_list = request.user.userquiz_set.filter(is_passed=False)
+    if user.todolist:
+        quiz_list = user.todolist.userquiz_set.filter(is_passed=False)
+        for word in user.wordlist:
+            word.check_review()
+    else:
+        todolist = ToDoList(user=user)
+        quiz_list = user.todolist.userquiz_set.filter(is_passed=False)
     streak = current_streak(user)
     if streak == 1:
         streak_text = "1 day"

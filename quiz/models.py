@@ -5,6 +5,7 @@ from books.models import Unit
 
 class Quiz(models.Model):
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
+    unit_order = models.PositiveIntegerField()
     quiz_name = models.CharField(max_length=10)
     quiz_display_name = models.CharField(max_length=50)
 

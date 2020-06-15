@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from .models import Classroom
 from .forms import ClassroomForm, AddStudent, AddBook, RemoveStudent, RemoveBook
-from users.models import CustomUser, UserQuiz
+from users.models import CustomUser, UserQuiz, ToDoList
 from books.models import Book
 
 
@@ -59,8 +59,15 @@ def class_add_students(request, pk):
             for book in classroom.book_set.all():
                 for unit in book.unit_set.all():
                     for quiz in unit.quiz_set.all():
-                        userquiz = UserQuiz(user=student, quiz=quiz)
-                        userquiz.save()
+                        if student.todolist:
+                            userquiz = UserQuiz(quiz=quiz, todolist=student.todolist)
+                            userquiz.save()
+                        else:
+                            todolist = ToDoList(user=student)
+                            todolist.save()
+                            userquiz = UserQuiz(quiz=quiz, todolist=student.todolist)
+                            userquiz.save()
+
             return redirect('class-detail', pk=pk)
     else:
         form = AddStudent()
@@ -78,8 +85,12 @@ def class_remove_students(request, pk):
             for book in classroom.book_set.all():
                 for unit in book.unit_set.all():
                     for quiz in unit.quiz_set.all():
-                        userquiz= UserQuiz.objects.get(user=student, quiz=quiz)
-                        userquiz.delete()
+                        if student.todolist:
+                            userquiz = UserQuiz.objects.get(todolist=student.todolist, quiz=quiz)
+                            userquiz.delete()
+                        else:
+                            todolist = ToDoList(user=student)
+                            todolist.save()                            
             student.save()
             return redirect('class-detail', pk=pk)
     else:
@@ -99,8 +110,14 @@ def class_add_books(request, pk):
                 for student in classroom.customuser_set.all():
                     for unit in book.unit_set.all():
                         for quiz in unit.quiz_set.all():
-                            userquiz = UserQuiz(quiz=quiz, user=student)
-                            userquiz.save()
+                            if student.todolist:
+                                userquiz = UserQuiz(quiz=quiz, todolist=student.todolist)
+                                userquiz.save()
+                            else:
+                                todolist = ToDoList(user=student)
+                                todolist.save()
+                                userquiz = UserQuiz(quiz=quiz, todolist=student.todolist)
+                                userquiz.save()                                                                
             return redirect('class-detail', pk=pk)
     else:
         form = AddBook()
@@ -119,8 +136,12 @@ def class_remove_books(request, pk):
                 for student in classroom.customuser_set.all():
                     for unit in book.unit_set.all():
                         for quiz in unit.quiz_set.all():
-                            userquiz = student.userquiz_set.get(quiz = quiz)
-                            userquiz.delete()
+                            if student.todolist:
+                                userquiz = student.userquiz_set.get(quiz = quiz)
+                                userquiz.delete()
+                            else:
+                                todolist = ToDoList(user=student)
+                                todolist.save()
             return redirect('class-detail', pk=pk)
     else:
         form = RemoveBook()

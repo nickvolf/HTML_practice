@@ -3,6 +3,7 @@ from django.utils.timezone import now
 from django.contrib.auth.models import AbstractUser
 from quiz.models import Word, Quiz
 from classroom.models import Classroom
+from datetime import datetime, timedelta
 
 
 class CustomUser(AbstractUser):
@@ -20,10 +21,13 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.full_name
 
+class ToDoList(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+
 
 class UserQuiz(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    todo_list = models.ForeignKey(ToDoList, on_delete=models.CASCADE)
     is_passed = models.BooleanField(default=False)
     date_passed = models.DateField(null=True, blank=True)
 
@@ -33,6 +37,38 @@ class UserQuiz(models.Model):
 
 class UserTest(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    todo_list = models.ForeignKey(ToDoList, on_delete=models.CASCADE)
     is_passed = models.BooleanField(default=False)
     date_passed = models.DateField(null=True, blank=True)
+
+class WordList(models.Model):
+    todo = models.OneToOneField(ToDoList, on_delete=models.CASCADE)
+
+class UserWord(models.Model):
+    word_list = models.ForeignKey(WordList, on_delete=models.CASCADE)
+    word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    last_studied = models.DateTimeField(default=now())
+    level = models.PositiveIntegerField(default=0)
+    need_review = models.BooleanField(default=True)
+
+    def check_review(self):
+        if self.level == 0:
+            self.need_review = True
+        elif self.level == 1:
+            if last_studied - datetime.now() < timedelta(days=1):
+                self.need_review = True
+        elif self.level == 2:
+            if last_studied - datetime.now() < timedelta(days=2):
+                self.need_review = True
+        elif self.level == 3:
+            if last_studied - datetime.now() < timedelta(days=4):
+                self.need_review = True
+        elif self.level == 4:
+            if last_studied - datetime.now() < timedelta(days=8):
+                self.need_review = True
+        elif self.level == 5:
+            if last_studied - datetime.now() < timedelta(days=14):
+                self.need_review = True
+        elif self.level > 5:
+            self.need_review = False
+
