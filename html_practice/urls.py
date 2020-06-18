@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
 from django.conf import settings
+from users import views as user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,6 +13,7 @@ urlpatterns = [
     path('quiz/', include('quiz.urls')),
     path('books/', include('books.urls')),
     path('classroom/', include('classroom.urls')),
+    url('signup/', user_views.signup, name='signup'),
 ]
 
 if settings.DEBUG:

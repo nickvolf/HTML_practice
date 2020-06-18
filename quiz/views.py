@@ -5,7 +5,42 @@ import datetime
 
 from .models import Quiz, ChooseWordQuestion, ChooseSentenceQuestion, PosNegQuestion, ResponseQuestion, Word
 from books.models import Unit
-from users.models import UserQuiz, UserWord, WordList
+from users.models import UserQuiz, UserWord, WordList, ToDoList
+from datetime import datetime, timedelta, date 
+
+
+def check_current_streak(user):
+    total_streak = 0
+    current_streak = 0
+    today = date.today()
+    compareDate = today + timedelta(1) #tomorrow
+    # Using list() here pulls all the quizzes
+    # Gets all the dates for the todolist whose date is today
+    if hasattr(user, 'todolist'):
+        passed_dates = list(user.todolist.userquiz_set.values("date_passed").filter(date__lte = today).order_by("-date_passed"))
+    else:
+        todolist = ToDoList(user=user)
+        todolist.save()
+        passed_dates = list(user.todolist.userquiz_set.values("date_passed").filter(date__lte = today).order_by("-date_passed"))
+
+                
+    for pass_date in passed_dates:
+        #Get the difference between the dates
+        delta = compareDate - pass_date
+
+        if delta.days == 1: #Keep the streak going
+            current_streak +=1
+        elif delta.days == 0: # Don't bother increasing the day.
+            pass
+        else:
+            break
+
+        compareDate = date_passed
+
+    if current_streak > total_streak:
+        total_streak = current_streak
+
+    return total_streak
 
 
 def quiz_detail_view(request, pk):
@@ -22,14 +57,14 @@ def quiz_take_view(request, pk):
             points = form.cleaned_data['points']
             user.score = user.score + int(points)
             word_set = quiz.word_set.all()
-            userquiz = user.userquiz_set.get(quiz=quiz)
+            userquiz = user.todolist.userquiz_set.get(quiz=quiz)
             userquiz.is_passed = True
-            userquiz.date_passed = datetime.datetime.now()
+            userquiz.date_passed = datetime.now()
             userquiz.save()
             for word in word_set:
                 if word not in user.words.all():
-                    user.words.add(word)
-                    if user.wordlist:
+                    user.words.add(word)                    
+                    if hasattr(user, 'wordlist'):
                         userword = UserWord(word_list=user.worldlist, word=word)
                         userword.save()
                     else:
@@ -37,7 +72,8 @@ def quiz_take_view(request, pk):
                         wordlist.save()
                         userword = UserWord(word_list=user.worldlist, word=word)
                         userword.save()
-            user.last_test = datetime.datetime.now()
+            user.last_test = datetime.now()
+            user.streak = check_current_streak(user)
             user.save()
 
         return redirect('home')
@@ -56,8 +92,12 @@ def quiz_create_view(request, pk):
             book = quiz.unit.book
             for classroom in book.classroom.all():
                 for student in classroom.customuser_set.all():
-                    userquiz = UserQuiz(quiz=quiz, user=student, todolist=user.todolist)
-                    userquiz.save()
+                    if hasattr(student, 'todolist'):
+                        userquiz = UserQuiz(quiz=quiz, user=student, todolist=user.todolist)
+                        userquiz.save()
+                    else:
+                        todolist = ToDoList(user = student)
+                        todolist.save()
 
             return redirect('unit-detail', pk=quiz.unit.pk)
     else:

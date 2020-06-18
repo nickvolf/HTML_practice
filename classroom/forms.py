@@ -1,7 +1,7 @@
 from django import forms
 from .models import Classroom
 from django.shortcuts import get_list_or_404
-from users.models import CustomUser
+from users.models import Student
 from books.models import Book
 
 
@@ -12,11 +12,11 @@ class ClassroomForm(forms.ModelForm):
 
 
 class AddStudent(forms.Form):
-    student = forms.ModelChoiceField(queryset=CustomUser.objects.filter(has_class=False))
+    student = forms.ModelChoiceField(queryset=Student.objects.filter(has_class=False))
 
 
 class RemoveStudent(forms.Form):
-    student = forms.ModelChoiceField(queryset=CustomUser.objects.filter(has_class=True))
+    student = forms.ModelChoiceField(queryset=Student.objects.filter(has_class=True))
 
 
 class AddBook(forms.Form):

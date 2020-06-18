@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from .models import Classroom
 from .forms import ClassroomForm, AddStudent, AddBook, RemoveStudent, RemoveBook
-from users.models import CustomUser, UserQuiz, ToDoList
+from users.models import Student, UserQuiz, ToDoList
 from books.models import Book
 
 
@@ -11,7 +11,7 @@ def class_detail_view(request, pk):
 
 
 def class_list_view(request):
-    class_list = get_list_or_404(Classroom)
+    class_list = Classroom.objects.all()
     return render(request, 'classroom/class_list.html', {"class_list": class_list})
 
 
@@ -23,7 +23,7 @@ def add_class_view(request):
             return redirect('class-detail', pk=classroom.pk)
     else:
         form = ClassroomForm()
-        return render(request, 'classroom/create_class.html', {"form": form})
+        return render(request, 'classroom/class_create.html', {"form": form})
 
 
 def class_update_view(request, pk):
@@ -58,14 +58,14 @@ def class_add_students(request, pk):
             student.save()
             for book in classroom.book_set.all():
                 for unit in book.unit_set.all():
-                    for quiz in unit.quiz_set.all():
-                        if student.todolist:
-                            userquiz = UserQuiz(quiz=quiz, todolist=student.todolist)
+                    for quiz in unit.quiz_set.all():                        
+                        if hasattr(student, 'todolist'):
+                            userquiz = UserQuiz(quiz=quiz, todo_list=student.todolist)
                             userquiz.save()
                         else:
                             todolist = ToDoList(user=student)
                             todolist.save()
-                            userquiz = UserQuiz(quiz=quiz, todolist=student.todolist)
+                            userquiz = UserQuiz(quiz=quiz, todo_list=student.todolist)
                             userquiz.save()
 
             return redirect('class-detail', pk=pk)
@@ -85,12 +85,14 @@ def class_remove_students(request, pk):
             for book in classroom.book_set.all():
                 for unit in book.unit_set.all():
                     for quiz in unit.quiz_set.all():
-                        if student.todolist:
-                            userquiz = UserQuiz.objects.get(todolist=student.todolist, quiz=quiz)
+                        if hasattr(student, 'todolist'):
+                            userquiz = UserQuiz.objects.get(todo_list=student.todolist, quiz=quiz)
                             userquiz.delete()
                         else:
                             todolist = ToDoList(user=student)
-                            todolist.save()                            
+                            todolist.save()  
+                            userquiz = UserQuiz.objects.get(todo_list=student.todolist, quiz=quiz)
+                            userquiz.delete()                          
             student.save()
             return redirect('class-detail', pk=pk)
     else:
@@ -110,13 +112,13 @@ def class_add_books(request, pk):
                 for student in classroom.customuser_set.all():
                     for unit in book.unit_set.all():
                         for quiz in unit.quiz_set.all():
-                            if student.todolist:
-                                userquiz = UserQuiz(quiz=quiz, todolist=student.todolist)
+                            if hasattr(student, 'todolist'):
+                                userquiz = UserQuiz(quiz=quiz, todo_list=student.todolist)
                                 userquiz.save()
                             else:
                                 todolist = ToDoList(user=student)
                                 todolist.save()
-                                userquiz = UserQuiz(quiz=quiz, todolist=student.todolist)
+                                userquiz = UserQuiz(quiz=quiz, todo_list=student.todolist)
                                 userquiz.save()                                                                
             return redirect('class-detail', pk=pk)
     else:
@@ -136,7 +138,7 @@ def class_remove_books(request, pk):
                 for student in classroom.customuser_set.all():
                     for unit in book.unit_set.all():
                         for quiz in unit.quiz_set.all():
-                            if student.todolist:
+                            if hasattr(student, 'todolist'):
                                 userquiz = student.userquiz_set.get(quiz = quiz)
                                 userquiz.delete()
                             else:
