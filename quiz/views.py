@@ -5,7 +5,7 @@ import datetime
 
 from .models import Quiz, ChooseWordQuestion, ChooseSentenceQuestion, PosNegQuestion, ResponseQuestion, Word
 from books.models import Unit
-from users.models import UserQuiz, UserWord, WordList, ToDoList
+from users.models import UserQuiz, UserWord, ToDoList
 from datetime import datetime, timedelta, date 
 
 
@@ -49,32 +49,24 @@ def quiz_detail_view(request, pk):
 
 
 def quiz_take_view(request, pk):
-    user = request.user
+    student = request.user.student
     quiz = Quiz.objects.get(pk=pk)
     if request.method == "POST":
         form = SendQuizInfoForm(request.POST)
         if form.is_valid():
             points = form.cleaned_data['points']
-            user.score = user.score + int(points)
+            student.score = student.score + int(points)
             word_set = quiz.word_set.all()
-            userquiz = user.todolist.userquiz_set.get(quiz=quiz)
+            userquiz = student.todolist.userquiz_set.get(quiz=quiz)
             userquiz.is_passed = True
             userquiz.date_passed = datetime.now()
             userquiz.save()
             for word in word_set:
-                if word not in user.words.all():
-                    user.words.add(word)                    
-                    if hasattr(user, 'wordlist'):
-                        userword = UserWord(word_list=user.worldlist, word=word)
-                        userword.save()
-                    else:
-                        wordlist = WordList(user=user)
-                        wordlist.save()
-                        userword = UserWord(word_list=user.worldlist, word=word)
-                        userword.save()
-            user.last_test = datetime.now()
-            user.streak = check_current_streak(user)
-            user.save()
+                if word not in student.words.all():
+                    student.words.add(word)
+            student.last_test = datetime.now()
+            student.streak = check_current_streak(student)
+            student.save()
 
         return redirect('home')
 

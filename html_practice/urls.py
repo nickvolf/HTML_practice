@@ -13,7 +13,7 @@ urlpatterns = [
     path('quiz/', include('quiz.urls')),
     path('books/', include('books.urls')),
     path('classroom/', include('classroom.urls')),
-    url('signup/', user_views.signup, name='signup'),
+    path('signup/', user_views.signup, name='signup'),
 ]
 
 if settings.DEBUG:

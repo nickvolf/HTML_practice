@@ -80,10 +80,12 @@ class UserWord(models.Model):
 def create_student(sender, instance, created, **kwargs):
     if created:
         Student.objects.create(user=instance)
+    instance.student.save()
+    todolist = ToDoList(user=instance.student)
+    todolist.save()
+
 
 @receiver(post_save, sender=User)
 def save_student(sender, instance, **kwargs):
     instance.student.save()
-    todolist = ToDoList(user=instance.student)
-    todolist.save()
 
